@@ -1,4 +1,6 @@
 /C++/*.bin
 /C++/*.exe
-/C++/.cph/
+/C++/*.json
 
+/C++/.cph/
+/C++/.vscode/
