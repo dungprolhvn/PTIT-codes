@@ -1,3 +1,7 @@
+/*.exe
+/*.bin
+/*.json
+
 /C++/*.bin
 /C++/*.exe
 /C++/*.json
