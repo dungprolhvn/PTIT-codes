@@ -1,10 +1,18 @@
-/*.exe
-/*.bin
-/*.json
+*.exe
+*.bin
+*.json
 
-/C++/*.bin
-/C++/*.exe
-/C++/*.json
+C++/*.bin
+C++/*.exe
+C++/*.json
+C++/.cph/
+C++/.vscode/
 
-/C++/.cph/
-/C++/.vscode/
+dsa/*.bin
+dsa/*.exe
+dsa/*.json
+dsa/.cph/
+dsa/.vscode/
+C++/PTIT.out
+C++/PTIT.in
+dsa/*.class
