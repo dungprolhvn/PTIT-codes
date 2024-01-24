@@ -11,7 +11,6 @@ def main():
                 c1 += 1
             else:
                 c2 += 1
-        
         for i in range(c0):
             print(0, end=" ")
         for i in range(c1):
