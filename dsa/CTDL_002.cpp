@@ -1,39 +1,51 @@
 #include <bits/stdc++.h>
 
+using namespace std;
 
+int counterr = 0; // counterrer subarray
 
-int count = 0; // counter subarray
-
-void findSubarrays(int* arr, int n, int k, std::vector<int>& v, int i) {
-    if (k == 0) {
-        std::sort(v.begin(), v.end());
-        for (int i : v) {
-            std::cout << i << " ";
-        }
-        count++;
-        std::cout << std::endl;
+void print(vector<int> v, bitset<10> b, int n, int k) {
+    int sum = 0;
+    for (int i = 0; i < n; i++) {
+        if (b[i])
+            sum += v[i];
+    }
+    if (sum != k) 
         return;
+    counterr++;
+    for (int i = 0; i < n; i++) {
+        if (b[i]) 
+            cout << v[i] << " ";
     }
-    for (int j = i; j < n; j++) {
-        if (k - arr[j] >= 0) {
-            v.push_back(arr[j]);
-            findSubarrays(arr, n, k - arr[j], v, j+1);
-            v.pop_back(); // backtrack
+    cout << endl;
+}
+
+
+void findSubarray(vector<int> v, int n, int k) {
+    // Init
+    bitset<10> binary(0);
+    // Loop
+    while (true) {
+        print(v, binary, n, k);
+        int i = n - 1;
+        while (binary[i] == 1) {
+            binary[i] = 0;
+            i--;
         }
+        if (i < 0) break;
+        binary[i] = 1;
     }
+    cout << counterr << endl;
 }
 
 
 int main() {
     int n, k;
-    std::cin >> n >> k;
-    int *arr = new int[n];
+    cin >> n >> k;
+    vector<int> a(n);
     for (int i = 0; i < n; i++) {
-        std::cin >> arr[i];
+        cin >> a[i];
     }
-    std::sort(arr, arr+n, std::greater<int>());
-    std::vector<int> v;
-    findSubarrays(arr, n, k, v, 0);
-    std::cout << count << std::endl;
+    findSubarray(a, n, k);
     return 0;
 }
