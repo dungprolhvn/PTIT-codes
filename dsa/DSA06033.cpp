@@ -14,19 +14,20 @@ int main()
             cin >> arr[i];
         }
         int ji = -1;
-        int i = 0, j = n - 1;
-        while (i < j) {
-            if (arr[j] > arr[i]) {
-                ji = j - i;
-                break;
+        int maxx[n]; 
+        maxx[n - 1] = arr[n - 1];
+        for (int i = n - 2; i >= 0; i--) {
+            maxx[i] = (maxx[i+1] > arr[i]) ? maxx[i+1] : arr[i];
+        }
+        int i = 0, j = 0;
+        while (i < n && j < n) {
+            if (maxx[j] > arr[i]) {
+                ji = max(ji, j - i);
+                j++;
             }
-            else {
-                if (arr[i] - arr[j] > arr[i+1] - arr[j]) i++;
-                else j--;
-            }
+            else i++;
         }
         cout << ji << endl;
-        delete[] arr;
     }
     return 0;
 }
