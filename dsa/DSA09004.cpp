@@ -1,51 +1,54 @@
 #include <bits/stdc++.h>
+#define pb push_back
 typedef unsigned long long ll;
 
 using namespace std;
 
-
-vector<int> stackDFS(unordered_map<int, set<int>> adjacencyList, int v, int start) {
+vector<int> DFS(vector<vector<int>> dsKe, int v, int start)
+{
     vector<int> path;
-    vector<int> visited(v+1, 0);
+    vector<int> visited(v + 1, 0);
     stack<int> stackFrontier;
     stackFrontier.push(start);
-    set<int>::reverse_iterator rit;
-    while (!stackFrontier.empty()) {
+    while (!stackFrontier.empty())
+    {
         int u = stackFrontier.top();
         stackFrontier.pop();
-        if (!visited[u]) {
+        if (!visited[u])
+        {
             visited[u] = 1;
-            path.push_back(u);
-            for (rit = adjacencyList[u].rbegin(); rit != adjacencyList[u].rend(); rit++) {
-                stackFrontier.push(*rit);
-            }
+            path.pb(u);
+            for (int j : dsKe[u])
+                stackFrontier.push(j);
         }
     }
     return path;
 }
 
-
 int main()
 {
-    int t; cin >> t;
+    int t;
+    cin >> t;
     while (t--)
     {
         int v, e, u;
         cin >> v >> e >> u;
-        // Read edge list and store as a adjacency list
-        unordered_map<int, set<int>> adjacencyList;
-        for (int i = 1; i <= v; i++) {
-            adjacencyList[i] = set<int>();
-        }
+        vector<vector<int>> dsKe(v + 1);
         int a, b;
-        for (int i = 0; i < e; i++) {
+        for (int i = 0; i < e; i++)
+        {
             cin >> a >> b;
-            adjacencyList[a].insert(b);
-            adjacencyList[b].insert(a);
+            dsKe[a].pb(b);
+            dsKe[b].pb(a);
+        }
+        for (int i = 1; i <= v; i++)
+        {
+            sort(dsKe[i].rbegin(), dsKe[i].rend());
         }
         // DFS
-        vector<int> result = stackDFS(adjacencyList, v, u);
-        for (int i : result) {
+        vector<int> result = DFS(dsKe, v, u);
+        for (int i : result)
+        {
             cout << i << " ";
         }
         cout << endl;
