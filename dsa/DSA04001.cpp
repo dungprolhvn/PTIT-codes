@@ -3,18 +3,13 @@ typedef long long ll;
 
 using namespace std;
 
-const long d = 1e9 + 7;
+const long mod = 1e9 + 7;
 
-ll nmuk(ll n, ll k) {
-    ll rs = 1;
-    while (k > 0) {
-        if (k&1) {
-            rs = (rs*n) % d;
-        }
-        n = (n*n) % d;
-        k >>= 1;
-    }
-    return rs;
+ll poww(ll a, ll b) {
+    if (b == 0) return 1;
+    ll x = poww(a, b/2);
+    if (b&1) return x % mod * x % mod * a % mod;
+    return x % mod * x % mod;
 }
 
 
@@ -25,7 +20,7 @@ int main()
     while (t--) {
         ll n, k;
         cin >> n >> k;
-        cout << nmuk(n, k) << endl;
+        cout << poww(n, k) << endl;
     }
     return 0;
 }
