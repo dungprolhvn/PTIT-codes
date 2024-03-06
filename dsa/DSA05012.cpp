@@ -1,36 +1,29 @@
 #include <bits/stdc++.h>
 #define pb push_back
-typedef long long ll;
+typedef unsigned long long ll;
 
 using namespace std;
-const ll mod = 1e9+7;
-
-
-ll poww(ll a, ll b) {
-    if (!b) return 1;
-    ll x = poww(a, b/2);
-    if (b&1) return x*x % mod * a%mod;
-    return x*x % mod;
-}
-
-
-ll comb(int n, int k) {
-    // ckn = n! / k! (n-k)!
-    ll fact[n+1];
-    fact[0] = 1;
-    fact[1] = 1;
-    for (int i = 2; i <= n; i++) fact[i] = fact[i-1]*i % mod;
-    return fact[n]*poww(fact[k]*fact[n-k]%mod, mod - 2) % mod;
-}
-
+const long mod = 1e9+7;
 
 int main()
-{
-    int t, n ,k; cin >> t;
+{   
+    vector<vector<int>> C(1001, vector<int>(1001, 0));
+    for (int i = 0; i < 1001; i++) {
+        C[i][0] = 1;
+        C[i][i] = 1;
+    }
+    for (int i = 1; i < 1001; i++) {
+        for (int j = 1; j < 1001; j++) {
+            if (i==j) continue;
+            C[i][j] = (C[i-1][j] + C[i-1][j-1]) % mod;
+        }
+    }
+    int t; cin >> t;
     while (t--)
     {
+        int n, k;
         cin >> n >> k;
-        cout << comb(n, k) << endl;
+        cout << C[n][k] << endl;
     }
     return 0;
 }
