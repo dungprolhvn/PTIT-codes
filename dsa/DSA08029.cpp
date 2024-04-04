@@ -24,25 +24,18 @@ string rot(string s, bool l) {
 
 int min_step(string src, string tar) {
     queue<node> q;
-    unordered_map<string, bool> visited;
     q.push({src, 0});
-    visited[src] = true;
-    node t; 
-    string tmp;
+    node t; string tmp;
     while (!q.empty()) {
         t = q.front();
         q.pop();
         if (t.s == tar) return t.step;
         // rotate left square and add to q
         tmp = rot(t.s, true);
-        if (visited.find(tmp) == visited.end()) {
-            q.push({tmp, t.step + 1});
-        }
+        q.push({tmp, t.step + 1});
         // rotate right square
         tmp = rot(t.s, false);
-        if (visited.find(tmp) == visited.end()) {
-            q.push({tmp, t.step + 1});
-        }
+        q.push({tmp, t.step + 1});
     }
     return -1;
 }
