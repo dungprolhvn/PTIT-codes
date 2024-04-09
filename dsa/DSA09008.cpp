@@ -3,57 +3,45 @@
 typedef unsigned long long ll;
 
 using namespace std;
+int num[1005], parent[1005];
 
-bitset<1005> visited;
-vector<vector<int>> dsKe(1005);
-
-
-void bfs(int v, int i) {
-    queue<int> frontier;
-    frontier.push(i);
-    visited[i] = 1;
-    while (!frontier.empty()) {
-        int u = frontier.front();
-        frontier.pop();
-        for (int j : dsKe[u]) {
-            if (!visited[j]) {
-                visited[j] = 1;
-                frontier.push(j);
-            }
-        }
-    }
-}
-
-
-int soTPLT(int v) {
-    int count = 0;
+void createSet(int v) {
     for (int i = 1; i <= v; i++) {
-        if (!visited[i]) {
-            count++;
-            bfs(v, i);
-        }
+        parent[i] = i;
+        num[i] = 1;
     }
-    return count;
 }
 
+int Find(int u) {
+    if (u != parent[u]) {
+        return u = Find(parent[u]);
+    }
+    return u;
+}
+
+void Union(int a, int b) {
+    a = Find(a), b = Find(b);
+    if (a != b) {
+        if (num[a] < num[b]) swap(a, b);
+        parent[b] = a;
+        num[a] += num[b];
+    }
+}
 
 int main()
 {
-    int t; cin >> t;
+    int t, v, e, a, b; cin >> t;
     while (t--)
     {
-        int v, e, a, b;
         cin >> v >> e;
-        for (int i = 1; i <= v; i++) {
-            visited[i] = 0;
-            dsKe[i].clear();
-        }
+        createSet(v);
         for (int i = 0; i < e; i++) {
             cin >> a >> b;
-            dsKe[a].pb(b);
-            dsKe[b].pb(a);
+            Union(a, b);
         }
-        cout << soTPLT(v) << endl;
+        int cnt = 0;
+        for (int i = 1; i <= v; i++) if (i == parent[i]) cnt++;
+        cout << cnt << endl;
     }
     return 0;
 }
