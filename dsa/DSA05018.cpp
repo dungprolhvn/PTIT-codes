@@ -4,26 +4,40 @@ typedef unsigned long long ll;
 
 using namespace std;
 
+int lcs(string s) {
+    int rs = 1;
+    int len = s.length(), l, r;
+    for (int i = 1; i < len; i++) {
+        // even length
+        l = i - 1;
+        r = i;
+        while (l >= 0 && r < len && s[l] == s[r]) {
+            l--;
+            r++;
+        }
+        ++l, --r;
+        if (r - l + 1 > rs) rs = r - l + 1;
+        // odd length
+        l = i - 1;
+        r = i + 1;
+        while (l >= 0 && r < len && s[l] == s[r]) {
+            l--;
+            r++;
+        }
+        ++l, --r;
+        if (r - l + 1 > rs) rs = r - l + 1;
+    }
+    return rs;
+}
+
 int main()
 {
     int t; cin >> t;
     while (t--)
     {
-        int rs = 1;
-        string s; cin >> s;
-        int l = s.length();
-        vector<vector<bool>> dp(l, vector<bool>(l, 0));
-        for (int i = 0; i < l; i++) dp[i][i] = 1;
-        for (int i = l-1; i >= 0; i--) {
-            for (int j = i; j <= l-1; j++) {
-                if (s[i] == s[j]) {
-                    if (j-i==1) dp[i][j] = 1;
-                    else dp[i][j] = dp[i+1][j-1];
-                }
-                if (dp[i][j]) rs = max(rs, j-i+1);
-            }
-        }
-        cout << rs << endl;
+        string s;
+        cin >> s;
+        cout << lcs(s) << endl;
     }
     return 0;
 }
