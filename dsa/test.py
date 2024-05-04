@@ -1,12 +1,15 @@
-catalan = [0]*101
-catalan[0] = catalan[1] = 1
-for i in range(2, 101):
-    for j in range(i//2):
-        catalan[i] += 2*catalan[j]*catalan[i-j-1]
-    if i & 1:
-        catalan[i] += catalan[i//2]*catalan[i//2]
+def main():
+    MAXN = 101
+    MOD = int(1e9+7)
+    dp = [0] * MAXN
+    dp[1] = 10
+    for i in range(2, MAXN):
+        dp[i] = (dp[i - 1] * (i + 9)) % MOD
+        dp[i] = (dp[i] * pow(i, MOD - 2, MOD)) % MOD
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        print(dp[n])
 
-t = int(input())
-for _ in range(t):
-    n = int(input())
-    print(catalan[n])
+if __name__ == '__main__':
+    main()
