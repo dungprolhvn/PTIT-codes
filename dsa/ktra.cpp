@@ -3,63 +3,48 @@
 typedef unsigned long long ll;
 
 using namespace std;
+const int MAX = 1e5+1;
+int parent[MAX];
+int setSize[MAX];
 
-struct Node {
-    int val;
-    Node* left;
-    Node* right;
-    Node(int v) : val(v), left(nullptr), right(nullptr) {}
-};
-
-Node* constructTree(vector<int>& a, int n) {
-    Node* root = new Node(a[0]);
-    sort(a.begin()+1, a.end());
-    queue<Node*> q;
-    q.push(root);
-    for (int i = 1; i < n; i++) {
-        Node* node = q.front();
-        if (node->left == nullptr) {
-            node->left = new Node(a[i]);
-            q.push(node->left);
-        } else {
-            node->right = new Node(a[i]);
-            q.push(node->right);
-            q.pop();
-        }
+void init(int n) {
+    for (int i = 1; i <= n; i++) {
+        parent[i] = i;
+        setSize[i] = 1;
     }
-    return root;
 }
 
-vector<int> rightLevelOrder(Node* root) {
-    vector<int> result;
-    if (!root) return result;
-    queue<Node*> q;
-    q.push(root);
-    while (!q.empty()) {
-        int size = q.size();
-        for (int i = 0; i < size; i++) {
-            Node* node = q.front();
-            q.pop();
-            if (i == size - 1) result.push_back(node->val);
-            if (node->left) q.push(node->left);
-            if (node->right) q.push(node->right);
-        }
+int Find(int e) {
+    if (e != parent[e]) return e = Find(parent[e]);
+    return e;
+}
+
+void Union(int a, int b) {
+    a = Find(a), b = Find(b);
+    if (a != b) {
+        if (setSize[a] < setSize[b]) swap(a, b);
+        parent[b] = a;
+        setSize[a] += setSize[b];
     }
-    return result;
 }
 
 int main()
 {
-    int t; cin >> t;
-    while (t--)
-    {
-        int n; cin >> n;
-        vector<int> a(n);
-        for (int i = 0; i < n; i++) cin >> a[i];
-        Node* root = constructTree(a, n);
-        vector<int> rs = rightLevelOrder(root);
-        for (int i : rs) cout << i << " ";
-        cout << endl;
+    int n, m, u, v;
+    cin >> n >> m;
+    init(n); 
+    for (int i = 0; i < m; i++) {
+        cin >> u >> v;
+        Union(u, v);
     }
+    int size1 = setSize[Find(1)];
+    int size2 = 0;
+    for (int i = 2; i <= n; i++) {
+        int root = Find(i);
+        if (root != Find(1)) {
+            size2 = max(size2, setSize[root]);
+        }
+    }
+    cout << size1 + size2 << endl; 
     return 0;
 }
