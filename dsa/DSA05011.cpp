@@ -10,7 +10,7 @@ int main()
     const long MOD = 1e9 + 7;
     vector<vector<int>> dp(MAX_N+5, vector<int>(MAX_K+5, 0));
     // dp[i][j]: so luong so co i chu so, tong bang j
-    for (int j = 1; j <= 9; jS++) dp[1][j] = 1;
+    for (int j = 1; j <= 9; j++) dp[1][j] = 1;
     for (int i = 1; i <= MAX_N; i++) {
         for (short digit = 0; digit <= 9; digit++) {
             for (int j = digit; j <= MAX_K; j++) {
