@@ -4,20 +4,36 @@ typedef unsigned long long ll;
 
 using namespace std;
 
-bool correct(string s) {
-    stack<char> st;
-    for (char c : s) {
-        if (c == '[' || c == '(') st.push(c);
-        else if (c == ']') {
-            if (!st.empty() && st.top() == '[') st.pop();
-            else return false;
-        }
-        else if (c == ')') {
-            if (!st.empty() && st.top() == '(') st.pop();
-            else return false;
-        }
+struct Node {
+    char c;
+    Node* left = nullptr;
+    Node* right = nullptr;
+    Node(char cc) : c(cc) {};
+};
+
+void rnl(Node* tree) {
+    if (tree == nullptr) return;
+    rnl(tree->right);
+    if (tree->c != 'N') cout << tree->c << " ";
+    rnl(tree->left);
+}
+
+void levelOrder(Node *tree)
+{
+    if (tree == nullptr)
+        return;
+    queue<Node *> q;
+    q.push(tree);
+    while (!q.empty())
+    {
+        Node *node = q.front();
+        q.pop();
+        cout << node->c << " ";
+        if (node->left != nullptr)
+            q.push(node->left);
+        if (node->right != nullptr)
+            q.push(node->right);
     }
-    return st.empty();
 }
 
 int main()
@@ -25,11 +41,26 @@ int main()
     int t; cin >> t; cin.ignore();
     while (t--)
     {
-        string s;
-        getline(cin, s, '.');
-        if (correct(s)) cout << "YES\n";
-        else cout << "NO\n";
-    }   
+        string line;
+        getline(cin, line);
+        stringstream ss(line);
+        char tmp;
+        ss >> tmp;
+        Node* tree = new Node(tmp);
+        queue<Node*> q;
+        q.push(tree);
+        while (ss >> tmp) {
+            Node* parent = q.front();
+            q.pop();
+            Node* child = new Node(tmp);
+            if (parent->left == nullptr) parent->left = child;
+            else parent->right = child;
+            if (parent->left == nullptr || parent->right == nullptr) q.push(parent);
+            q.push(child);
+        }
+        levelOrder(tree);
+        //rnl(tree);
+        cout << endl;   
+    }
     return 0;
 }
-
